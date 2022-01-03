@@ -39,6 +39,12 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
             logout.execute("",connectionId);
             //shouldTerminate = true;
         }
+        else if(message.charAt(0) == '4'){
+            message = message.substring(1);
+            Follow follow = new Follow();
+            follow.execute(message,connectionId);
+            //shouldTerminate = true;
+        }
         System.out.println("[" + LocalDateTime.now() + "]: " + message);
     }
 

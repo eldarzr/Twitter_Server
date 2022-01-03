@@ -47,18 +47,26 @@ public class BidiMessageEncoderDecoder implements MessageEncoderDecoder<String> 
         //notice that we explicitly requesting that the string will be decoded from UTF-8
         //this is not actually required as it is the default encoding in java.
 
-        short s = bytesToShort(bytes);
+        short s = bytesToShort(bytes, 0);
         String result = new String(bytes, 2, len-2, StandardCharsets.UTF_8);
         //result = result.replace('\0', ' ');
+        len -= 2;
+
+        if(s == 4){
+            short s1 = bytesToShort(bytes, 2);
+            //result = new String(bytes, 2, len-2, StandardCharsets.UTF_8);
+            result = result.substring(2);
+            result = s1 + result;
+        }
         len = 0;
         result = s + '\0' + result;
         return result;
     }
 
-    private short bytesToShort(byte[] byteArr)
+    private short bytesToShort(byte[] byteArr, int start)
     {
-        short result = (short)((byteArr[0] & 0xff) << 8);
-        result += (short)(byteArr[1] & 0xff);
+        short result = (short)((byteArr[start] & 0xff) << 8);
+        result += (short)(byteArr[start + 1] & 0xff);
         return result;
     }
 

@@ -14,7 +14,7 @@ public class Manneger {
     ConcurrentHashMap<String, User> registeredUsers; // <username, user>
     ConcurrentHashMap<User, Boolean> loggedInUsers; // is username loggedIn
     ConcurrentHashMap<User, Integer> userId; // <user, connectionId>
-    ConcurrentHashMap<Integer, User> idUser; // <user, connectionId>
+    ConcurrentHashMap<Integer, User> idUser; // <connectionId, user>
     Connections connections;
     AtomicInteger counter;
     static Manneger manneger = null;
@@ -70,12 +70,38 @@ public class Manneger {
     }
 
     public boolean logout(int connectionId) {
-        if(!userId.values().contains(connectionId))
+        if(!isUserLoggedIn(connectionId))
             return false;
         User user = idUser.get(connectionId);
         loggedInUsers.put(user, false);
         userId.remove(user);
         idUser.remove(connectionId);
         return true;
+    }
+
+    public boolean follow(String userName, int setF,int cID) {
+         if(!isUserLoggedIn(cID))
+             return false;
+         User u = registeredUsers.get(userName);
+         if (!registeredUsers.containsKey(userName))
+             return false;
+         User fUser = registeredUsers.get(userName);
+         User currentUser=idUser.get(cID);
+         if(setF==0){
+             return currentUser.follow(fUser);
+         }
+        return currentUser.unfollow(fUser);
+    }
+
+    private boolean isUserLoggedIn(int cID) {
+        if(!idUser.containsKey(cID))
+            return false;
+        User user = idUser.get(cID);
+        if(!registeredUsers.containsKey(user.getUserName()))
+            return false;
+        if(!loggedInUsers.containsKey(user))
+            return false;
+        return loggedInUsers.get(user);
+
     }
 }

@@ -1,21 +1,29 @@
 package bgu.spl.net.impl.BGSServer;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 
-public class User {
+public class User implements Comparable {
 
     private String userName;
     private String password;
     private String birthday;
     private Queue<String> awaitMessage;
+    private Set<User> following;
+    private Set<User> followers;
 
     public User(String userName, String password, String birthday) {
         this.userName = userName;
         this.password = password;
         this.birthday = birthday;
         awaitMessage = new ConcurrentLinkedQueue<>();
+        following= new ConcurrentSkipListSet<>();
+        followers= new ConcurrentSkipListSet<>();
     }
 
     public void addMessage(String msg){
@@ -49,5 +57,29 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(userName, password);
+    }
+
+    public boolean follow(User fUser) {
+        if(following.contains(fUser))
+            return false;
+        following.add(fUser);
+        fUser.followers.add(this);
+        return true;
+    }
+
+    public boolean unfollow(User fUser) {
+        if(!following.contains(fUser))
+            return false;
+        following.remove(fUser);
+        fUser.followers.remove(this);
+        return true;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(!(o instanceof User))
+            return -1;
+        User u = (User)o;
+        return u.userName.compareTo(userName);
     }
 }
