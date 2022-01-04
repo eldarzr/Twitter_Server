@@ -11,6 +11,7 @@
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/rci/ObjectEncoderDecoder.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/BidiMessageEncoderDecoder.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/srv/ConnectionHandler.java
+/home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Follow.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Register.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/echo/EchoProtocol.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/api/MessageEncoderDecoder.java

@@ -3,10 +3,8 @@ package bgu.spl.net.impl.BGSServer;
 import bgu.spl.net.api.bidi.ConnectionHandler;
 import bgu.spl.net.api.bidi.Connections;
 
-import javax.jws.soap.SOAPBinding;
-import java.sql.Connection;
+
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Manneger {
