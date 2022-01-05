@@ -11,10 +11,10 @@ public class ConnectionsImp implements Connections<String> {
     HashMap<Integer, ConnectionHandler> connectionsMap;
     Manneger manneger;
 
-    public ConnectionsImp(Manneger manneger){
+    public ConnectionsImp(){
 
         connectionsMap = new HashMap<>();
-        this.manneger = manneger;
+        this.manneger = Manneger.getInstance();
     }
 
     public void connect(int connectionId, ConnectionHandler connectionHandler) {

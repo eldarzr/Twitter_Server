@@ -3,6 +3,9 @@ package bgu.spl.net.srv;
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
+import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.impl.BGSServer.ConnectionsImp;
+import bgu.spl.net.impl.BGSServer.Manneger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -97,11 +100,14 @@ public class Reactor<T> implements Server<T> {
     private void handleAccept(ServerSocketChannel serverChan, Selector selector) throws IOException {
         SocketChannel clientChan = serverChan.accept();
         clientChan.configureBlocking(false);
+        Manneger manneger = Manneger.getInstance();
+        Connections connections = new ConnectionsImp(/*manneger*/);
+        manneger.setConnections(connections);
         final NonBlockingConnectionHandler<T> handler = new NonBlockingConnectionHandler<>(
                 readerFactory.get(),
                 protocolFactory.get(),
                 clientChan,
-                this);
+                this,connections);
         clientChan.register(selector, SelectionKey.OP_READ, handler);
     }
 
