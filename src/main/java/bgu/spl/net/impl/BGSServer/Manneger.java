@@ -46,6 +46,8 @@ public class Manneger {
     }
 
     public boolean login(User user, int connectionId){
+        if(isUserLoggedIn(connectionId))
+            return false;
         if(!registeredUsers.containsKey(user.getUserName()))
             return false;
         User user2 = registeredUsers.get(user.getUserName());
@@ -78,17 +80,28 @@ public class Manneger {
     }
 
     public boolean follow(String userName, int setF,int cID) {
-         if(!isUserLoggedIn(cID))
-             return false;
-         User u = registeredUsers.get(userName);
-         if (!registeredUsers.containsKey(userName))
-             return false;
-         User fUser = registeredUsers.get(userName);
-         User currentUser=idUser.get(cID);
-         if(setF==0){
-             return currentUser.follow(fUser);
-         }
+        if(!isUserLoggedIn(cID))
+            return false;
+        User u = registeredUsers.get(userName);
+        if (!registeredUsers.containsKey(userName))
+            return false;
+        User fUser = registeredUsers.get(userName);
+        User currentUser=idUser.get(cID);
+        if(setF==0){
+            return currentUser.follow(fUser);
+        }
         return currentUser.unfollow(fUser);
+    }
+
+    public boolean block(String userName,int cID) {
+        if(!isUserLoggedIn(cID))
+            return false;
+        User u = registeredUsers.get(userName);
+        if (!registeredUsers.containsKey(userName))
+            return false;
+        User fUser = registeredUsers.get(userName);
+        User currentUser=idUser.get(cID);
+        return currentUser.block(fUser);
     }
 
     private boolean isUserLoggedIn(int cID) {
@@ -102,4 +115,6 @@ public class Manneger {
         return loggedInUsers.get(user);
 
     }
+
+    public User getUser(int connectionId){ return idUser.get(connectionId);}
 }
