@@ -8,7 +8,7 @@ import bgu.spl.net.srv.Server;
 public class TPCMain {
     public static void main(String[] args) {
         Server.threadPerClient(
-                7777, //port
+                Integer.valueOf(args[0]), //port
                 () -> new BidiMessagingProtocolImpl(), //protocol factory
                 () -> new BidiMessageEncoderDecoder() //message encoder decoder factory
         ).serve();

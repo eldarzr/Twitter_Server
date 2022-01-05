@@ -23,7 +23,7 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
     @Override
     public void process(String message) {
         System.out.println(message);
-        if(message.charAt(0) == '1'){
+        if(message.charAt(0) == '1' && message.charAt(1) != '2'){
             message = message.substring(1);
             Register register = new Register();
             register.execute(message,connectionId);
@@ -43,6 +43,12 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
             message = message.substring(1);
             Follow follow = new Follow();
             follow.execute(message,connectionId);
+            //shouldTerminate = true;
+        }
+        else if(message.charAt(0) == '1' && message.charAt(1) == '2'){
+            message = message.substring(2);
+            Block block = new Block();
+            block.execute(message,connectionId);
             //shouldTerminate = true;
         }
         System.out.println("[" + LocalDateTime.now() + "]: " + message);

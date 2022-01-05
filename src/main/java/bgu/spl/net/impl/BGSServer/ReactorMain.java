@@ -5,7 +5,7 @@ import bgu.spl.net.srv.Reactor;
 public class ReactorMain {
  public static void main(String[] args) {
 
-  Reactor reactor = new Reactor(2,1829,() -> new BidiMessagingProtocolImpl(),()-> new BidiMessageEncoderDecoder());
+  Reactor reactor = new Reactor(Integer.valueOf(args[0]),Integer.valueOf(args[1]),() -> new BidiMessagingProtocolImpl(),()-> new BidiMessageEncoderDecoder());
   reactor.serve();
  }
 }

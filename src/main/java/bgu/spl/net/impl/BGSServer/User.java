@@ -16,6 +16,7 @@ public class User implements Comparable {
     private Queue<String> awaitMessage;
     private Set<User> following;
     private Set<User> followers;
+    private Set<User> blocked;
 
     public User(String userName, String password, String birthday) {
         this.userName = userName;
@@ -24,6 +25,7 @@ public class User implements Comparable {
         awaitMessage = new ConcurrentLinkedQueue<>();
         following= new ConcurrentSkipListSet<>();
         followers= new ConcurrentSkipListSet<>();
+        blocked= new ConcurrentSkipListSet<>();
     }
 
     public void addMessage(String msg){
@@ -62,8 +64,19 @@ public class User implements Comparable {
     public boolean follow(User fUser) {
         if(following.contains(fUser))
             return false;
+        if(fUser.isBlocked(this))
+            return false;
         following.add(fUser);
         fUser.followers.add(this);
+        return true;
+    }
+
+    public boolean block(User fUser) {
+        if(blocked.contains(fUser))
+            return false;
+        this.unfollow(fUser);
+        fUser.unfollow(this);
+        blocked.add(fUser);
         return true;
     }
 
@@ -81,5 +94,9 @@ public class User implements Comparable {
             return -1;
         User u = (User)o;
         return u.userName.compareTo(userName);
+    }
+
+    private boolean isBlocked(User user){
+        return blocked.contains(user);
     }
 }

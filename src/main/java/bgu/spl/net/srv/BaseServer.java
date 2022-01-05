@@ -41,7 +41,7 @@ public abstract class BaseServer<T> implements Server<T> {
             int counter = 0;
 
             Manneger manneger = Manneger.getInstance();
-            Connections connections = new ConnectionsImp(manneger);
+            Connections connections = new ConnectionsImp(/*manneger*/);
             manneger.setConnections(connections);
 
             while (!Thread.currentThread().isInterrupted()) {
