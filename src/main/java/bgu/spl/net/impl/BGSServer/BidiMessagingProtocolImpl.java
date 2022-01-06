@@ -45,6 +45,18 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
             follow.execute(message,connectionId);
             //shouldTerminate = true;
         }
+        else if(message.charAt(0) == '7'){
+            //message = "";
+            Logstat logstat = new Logstat();
+            logstat.execute(message,connectionId);
+            //shouldTerminate = true;
+        }
+        else if(message.charAt(0) == '8'){
+            //message = "";
+            Stat stat = new Stat();
+            stat.execute(message,connectionId);
+            //shouldTerminate = true;
+        }
         else if(message.charAt(0) == '1' && message.charAt(1) == '2'){
             message = message.substring(2);
             Block block = new Block();
