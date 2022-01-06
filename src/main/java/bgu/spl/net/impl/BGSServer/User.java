@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
+import sun.util.resources.LocaleData;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -22,6 +27,7 @@ public class User implements Comparable {
     private Set<User> blocked;
     private Boolean loggedIn;
     private int cID;
+    private LocalDate bd= LocalDate.of(1998,1,20);
 
     public User(String userName, String password, String birthday) {
         this.userName = userName;
@@ -138,7 +144,19 @@ public class User implements Comparable {
         }
 
     public void setcID(int cID) {
-        this.cID = cID;
+        this.cID = cID;}
+
+    public String getStat(){
+        int age = calculateAge();
+        int numOfPosts = 0;
+        int numFollowers = followers.size();
+        int numFollowing = following.size();
+        return age + "\0" + numOfPosts + "\0" + numFollowers + "\0" + numFollowing;
+    }
+
+    private int calculateAge() {
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(bd, currentDate).getYears();
     }
 }
 

@@ -12,7 +12,10 @@ public class Notification implements Command<String> {
         String noType = "" + args.charAt(0);
         args = args.substring(1);
         manneger.getConnections().send(connectionId,noType);
-        String postingUser = manneger.getUser(connectionId).getUserName();
+        User user = manneger.getUser(connectionId);
+        if(user == null)
+            return;
+        String postingUser = user.getUserName();
         manneger.getConnections().send(connectionId,postingUser + "\0");
         manneger.getConnections().send(connectionId,args + "\0");
         manneger.getConnections().send(connectionId,"NOTIFICATION;");

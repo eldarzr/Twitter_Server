@@ -10,7 +10,7 @@ public class Error implements Command<String> {
         Manneger manneger = Manneger.getInstance();
         manneger.getConnections().send(connectionId,"11");
         manneger.getConnections().send(connectionId,args);
-        manneger.getConnections().send(connectionId,"Error;");
+        manneger.getConnections().send(connectionId,";");
 
     }
 }

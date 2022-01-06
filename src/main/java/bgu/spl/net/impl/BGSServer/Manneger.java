@@ -4,6 +4,8 @@ import bgu.spl.net.api.bidi.ConnectionHandler;
 import bgu.spl.net.api.bidi.Connections;
 
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -112,7 +114,7 @@ public class Manneger {
         return currentUser.block(fUser);
     }
 
-    private boolean isUserLoggedIn(int cID) {
+    public boolean isUserLoggedIn(int cID) {
         if(!idUser.containsKey(cID))
             return false;
         User user = idUser.get(cID);
@@ -124,7 +126,6 @@ public class Manneger {
 
     }
 
-    public User getUser(int connectionId){ return idUser.get(connectionId);}
 
         public boolean post(String content, int connectionId) {
             User curentUser = getUser(connectionId);
@@ -154,5 +155,19 @@ public class Manneger {
         }*/
 
         return true;
+    public User getUser(int connectionId){
+        if(!idUser.containsKey(connectionId))
+            return null;
+        return idUser.get(connectionId);
+    }
+
+    public User getUser(String userName){
+        if(!registeredUsers.containsKey(userName))
+            return null;
+        return registeredUsers.get(userName);
+    }
+
+    public Collection<User> getAllUsers(){
+        return registeredUsers.values();
     }
 }

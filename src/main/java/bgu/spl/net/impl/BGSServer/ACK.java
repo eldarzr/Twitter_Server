@@ -11,7 +11,7 @@ public class ACK implements Command<String> {
         manneger.getConnections().send(connectionId,"10");
         for(String s : args.split("\0"))
             manneger.getConnections().send(connectionId,s);
-        manneger.getConnections().send(connectionId,"ACK;");
+        manneger.getConnections().send(connectionId,";");
 
     }
 }
