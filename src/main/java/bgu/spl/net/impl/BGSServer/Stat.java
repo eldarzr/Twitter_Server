@@ -1,8 +1,7 @@
 package bgu.spl.net.impl.BGSServer;
 
-import bgu.spl.net.api.bidi.Command;
 
-import java.io.Serializable;
+import bgu.spl.net.api.bidi.Command;
 
 public class Stat implements Command<String> {
     @Override

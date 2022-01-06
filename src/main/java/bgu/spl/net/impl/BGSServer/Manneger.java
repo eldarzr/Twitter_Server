@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -134,17 +135,21 @@ public class Manneger {
             content = curentUser.getUserName() + "\0" + content + "\0";
             Matcher m = Pattern.compile("@(\\w+)").matcher(content);
             Set<User> userFollowers = curentUser.getAllFollowers();
+            Set<User> taggedFollowers = new ConcurrentSkipListSet<>();
             while (m.find()) {
                 String userName = m.group().substring(1);
                 User sendUser = getUser(userName);
                 if (sendUser != null) {
-                    userFollowers.add(sendUser);
+                    taggedFollowers.add(sendUser);
                 }
-                for (User u : userFollowers) {
-                    int uCID = userId.get(u);
-                    u.postMsg(content, uCID);
-
-                }
+            }
+            for (User u : userFollowers) {
+                //int uCID = userId.get(u);
+                u.postMsg(content);
+            }
+            for (User u : taggedFollowers) {
+                //int uCID = userId.get(u);
+                u.postMsg(content);
             }
 /*        String contentCopy=content;
         while (contentCopy.contains("@")){

@@ -110,7 +110,7 @@ public class User implements Comparable {
         return followers;
     }
 
-    public void postMsg(String content, int cID) {
+    public void postMsg(String content/*, int cID*/) {
         synchronized (loggedIn) {
             if (loggedIn) {
                 Command command = new Notification();
