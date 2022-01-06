@@ -129,23 +129,23 @@ public class Manneger {
 
         public boolean post(String content, int connectionId) {
             User curentUser = getUser(connectionId);
-            if(curentUser==null ||!isUserLoggedIn(connectionId))
+            if (curentUser == null || !isUserLoggedIn(connectionId))
                 return false;
-            content=curentUser.getUserName()+"\0"+ content+"\0";
+            content = curentUser.getUserName() + "\0" + content + "\0";
             Matcher m = Pattern.compile("@(\\w+)").matcher(content);
             Set<User> userFollowers = curentUser.getAllFollowers();
             while (m.find()) {
-            String userName = m.group().substring(1);
-            User sendUser = getUser(userName);
-            if(sendUser != null){
-                userFollowers.add(sendUser);
-             }
-            for(User u : userFollowers){
-                int uCID = userId.get(u);
-                u.postMsg(content,uCID);
+                String userName = m.group().substring(1);
+                User sendUser = getUser(userName);
+                if (sendUser != null) {
+                    userFollowers.add(sendUser);
+                }
+                for (User u : userFollowers) {
+                    int uCID = userId.get(u);
+                    u.postMsg(content, uCID);
 
+                }
             }
-        }
 /*        String contentCopy=content;
         while (contentCopy.contains("@")){
              int userPlace = contentCopy.indexOf('@');
@@ -154,7 +154,9 @@ public class Manneger {
              String userName = contentCopy.substring(1,indexOfBlank);
         }*/
 
-        return true;
+            return true;
+        }
+
     public User getUser(int connectionId){
         if(!idUser.containsKey(connectionId))
             return null;

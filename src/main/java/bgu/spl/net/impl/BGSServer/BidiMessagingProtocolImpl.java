@@ -23,52 +23,42 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
     @Override
     public void process(String message) {
         System.out.println(message);
-        if(message.charAt(0) == '1' && message.charAt(1) != '2'){
+        if (message.charAt(0) == '1' && message.charAt(1) != '2') {
             message = message.substring(1);
             Register register = new Register();
-            register.execute(message,connectionId);
-        }
-        else if(message.charAt(0) == '2'){
+            register.execute(message, connectionId);
+        } else if (message.charAt(0) == '2') {
             message = message.substring(1);
             Login login = new Login();
-            login.execute(message,connectionId);
-        }
-        else if(message.charAt(0) == '3'){
+            login.execute(message, connectionId);
+        } else if (message.charAt(0) == '3') {
             message = message.substring(1);
             Logout logout = new Logout();
-            logout.execute("",connectionId);
+            logout.execute("", connectionId);
             //shouldTerminate = true;
-        }
-        else if(message.charAt(0) == '4'){
+        } else if (message.charAt(0) == '4') {
             message = message.substring(1);
             Follow follow = new Follow();
-            follow.execute(message,connectionId);
+            follow.execute(message, connectionId);
             //shouldTerminate = true;
-        }
-<<<<<<< HEAD
-
-        else if(message.charAt(0) == '5'){
+        } else if (message.charAt(0) == '5') {
             message = message.substring(1);
-            Post post = new Post ();
-            post.execute(message,connectionId);
-=======
-        else if(message.charAt(0) == '7'){
+            Post post = new Post();
+            post.execute(message, connectionId);
+        } else if (message.charAt(0) == '7') {
             //message = "";
             Logstat logstat = new Logstat();
-            logstat.execute(message,connectionId);
+            logstat.execute(message, connectionId);
             //shouldTerminate = true;
-        }
-        else if(message.charAt(0) == '8'){
+        } else if (message.charAt(0) == '8') {
             //message = "";
             Stat stat = new Stat();
-            stat.execute(message,connectionId);
->>>>>>> stat
+            stat.execute(message, connectionId);
             //shouldTerminate = true;
-        }
-        else if(message.charAt(0) == '1' && message.charAt(1) == '2'){
+        } else if (message.charAt(0) == '1' && message.charAt(1) == '2') {
             message = message.substring(2);
             Block block = new Block();
-            block.execute(message,connectionId);
+            block.execute(message, connectionId);
             //shouldTerminate = true;
         }
         System.out.println("[" + LocalDateTime.now() + "]: " + message);
