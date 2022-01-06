@@ -4,8 +4,11 @@ import bgu.spl.net.api.bidi.ConnectionHandler;
 import bgu.spl.net.api.bidi.Connections;
 
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Manneger {
 
@@ -55,9 +58,12 @@ public class Manneger {
             return false;
         if(loggedInUsers.get(user2))
             return false;
-        loggedInUsers.put(user, true);
+        loggedInUsers.put(user2, true);
         userId.put(user2, connectionId);
         idUser.put(connectionId, user2);
+        user2.setcID(connectionId);
+        user2.login();
+
         return true;
     }
 
@@ -76,6 +82,7 @@ public class Manneger {
         loggedInUsers.put(user, false);
         userId.remove(user);
         idUser.remove(connectionId);
+        user.logout();
         return true;
     }
 
@@ -87,6 +94,7 @@ public class Manneger {
             return false;
         User fUser = registeredUsers.get(userName);
         User currentUser=idUser.get(cID);
+        if(currentUser.equals(fUser)) {return false;}
         if(setF==0){
             return currentUser.follow(fUser);
         }
@@ -117,4 +125,34 @@ public class Manneger {
     }
 
     public User getUser(int connectionId){ return idUser.get(connectionId);}
+
+        public boolean post(String content, int connectionId) {
+            User curentUser = getUser(connectionId);
+            if(curentUser==null ||!isUserLoggedIn(connectionId))
+                return false;
+            content=curentUser.getUserName()+"\0"+ content+"\0";
+            Matcher m = Pattern.compile("@(\\w+)").matcher(content);
+            Set<User> userFollowers = curentUser.getAllFollowers();
+            while (m.find()) {
+            String userName = m.group().substring(1);
+            User sendUser = getUser(userName);
+            if(sendUser != null){
+                userFollowers.add(sendUser);
+             }
+            for(User u : userFollowers){
+                int uCID = userId.get(u);
+                u.postMsg(content,uCID);
+
+            }
+        }
+/*        String contentCopy=content;
+        while (contentCopy.contains("@")){
+             int userPlace = contentCopy.indexOf('@');
+             contentCopy = contentCopy.substring(userPlace);
+             int indexOfBlank = contentCopy.indexOf(" ");
+             String userName = contentCopy.substring(1,indexOfBlank);
+        }*/
+
+        return true;
+    }
 }

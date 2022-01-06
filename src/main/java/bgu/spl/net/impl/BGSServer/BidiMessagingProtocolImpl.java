@@ -45,6 +45,13 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
             follow.execute(message,connectionId);
             //shouldTerminate = true;
         }
+
+        else if(message.charAt(0) == '5'){
+            message = message.substring(1);
+            Post post = new Post ();
+            post.execute(message,connectionId);
+            //shouldTerminate = true;
+        }
         else if(message.charAt(0) == '1' && message.charAt(1) == '2'){
             message = message.substring(2);
             Block block = new Block();
