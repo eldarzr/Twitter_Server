@@ -154,7 +154,7 @@ public class Manneger {
 
        String filteredContent = filter(con);
 
-        content = "\1" +unReciever + filteredContent + msgDate + "\0";
+        content = "\1" +currentUser.getUserName() + "\0" + filteredContent + msgDate + "\0";
         if(!userReciever.sendPM(currentUser,content))
             return false;
         _allPrivateMSG.add(content);
