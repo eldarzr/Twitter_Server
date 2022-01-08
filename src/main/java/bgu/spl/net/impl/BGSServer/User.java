@@ -1,18 +1,14 @@
 package bgu.spl.net.impl.BGSServer;
 
 import bgu.spl.net.api.bidi.Command;
-import com.sun.xml.internal.ws.api.message.Message;
 
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
-import sun.util.resources.LocaleData;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -20,7 +16,7 @@ public class User implements Comparable {
 
     private String userName;
     private String password;
-    private String birthday;
+    private LocalDate birthday;
     private Queue<String> awaitMessage;
     private Set<User> following;
     private Set<User> followers;
@@ -32,7 +28,17 @@ public class User implements Comparable {
     public User(String userName, String password, String birthday) {
         this.userName = userName;
         this.password = password;
-        this.birthday = birthday;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.birthday = LocalDate.parse(birthday, formatter);
+        awaitMessage = new ConcurrentLinkedQueue<>();
+        following = new ConcurrentSkipListSet<>();
+        followers = new ConcurrentSkipListSet<>();
+        blocked = new ConcurrentSkipListSet<>();
+        this.loggedIn = false;
+    }
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
         awaitMessage = new ConcurrentLinkedQueue<>();
         following = new ConcurrentSkipListSet<>();
         followers = new ConcurrentSkipListSet<>();
@@ -49,7 +55,7 @@ public class User implements Comparable {
         return password;
     }
 
-    public String getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
@@ -156,7 +162,7 @@ public class User implements Comparable {
 
     private int calculateAge() {
         LocalDate currentDate = LocalDate.now();
-        return Period.between(bd, currentDate).getYears();
+        return Period.between(birthday, currentDate).getYears();
     }
 }
 
