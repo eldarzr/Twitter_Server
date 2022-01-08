@@ -2,11 +2,11 @@ package bgu.spl.net.impl.BGSServer;
 
 import bgu.spl.net.api.bidi.ConnectionHandler;
 import bgu.spl.net.api.bidi.Connections;
+import com.sun.xml.internal.messaging.saaj.util.FinalArrayList;
 
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,17 +14,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Manneger {
+
     private static class mannegerHolder{
         private static Manneger instance = new Manneger();
     }
-
     ConcurrentHashMap<String, User> registeredUsers; // <username, user>
     ConcurrentHashMap<User, Boolean> loggedInUsers; // is username loggedIn
     ConcurrentHashMap<User, Integer> userId; // <user, connectionId>
     ConcurrentHashMap<Integer, User> idUser; // <connectionId, user>
+    ArrayList<String> _allPostMSG;
+    ArrayList<String> _allPrivateMSG;
     Connections connections;
     AtomicInteger counter;
-    static Manneger manneger = null;
+    final ArrayList<String> filteredWords = new ArrayList<String>(Arrays.asList("Bennet","Loser"));
 
     private Manneger() {
         this.registeredUsers = new ConcurrentHashMap<>();
@@ -32,6 +34,9 @@ public class Manneger {
         this.userId = new ConcurrentHashMap<>();
         this.idUser = new ConcurrentHashMap<>();
         counter = new AtomicInteger(0);
+        _allPrivateMSG = new ArrayList<>();
+        _allPostMSG = new ArrayList<>();
+
     }
 
     public static Manneger getInstance(){
@@ -127,13 +132,53 @@ public class Manneger {
         return loggedInUsers.get(user);
 
     }
+    public boolean sendPM(String content, int connectionId) {
+        User currentUser = getUser(connectionId);
+        if (currentUser == null || !isUserLoggedIn(connectionId))
+            return false;
 
+        int userIndex = content.indexOf("\0");
+        String unReciever = content.substring(0,userIndex);
+        content = content.substring(userIndex+1);
+        User userReciever = getUser(unReciever);
 
-        public boolean post(String content, int connectionId) {
+        if(userReciever == null)
+            return false;
+
+        int contentIndex = content.indexOf("\0");
+        String con = content.substring(0,contentIndex);
+        content = content.substring(contentIndex+1);
+
+        int dateIndex = content.indexOf("\0");
+        String msgDate = content.substring(0,dateIndex);
+
+       String filteredContent = filter(con);
+
+        content = "\1" +unReciever + filteredContent + msgDate + "\0";
+        if(!userReciever.sendPM(currentUser,content))
+            return false;
+        _allPrivateMSG.add(content);
+
+        return true;
+      }
+
+    private String filter(String con) {
+        String filtered = "";
+        for(String s : con.split(" ")){
+            if(filteredWords.contains(s))
+                filtered=filtered+"<filtered> ";
+            else {
+                filtered=filtered+s + " ";
+            }
+        }
+        return filtered;
+    }
+
+    public boolean post(String content, int connectionId) {
             User curentUser = getUser(connectionId);
             if (curentUser == null || !isUserLoggedIn(connectionId))
                 return false;
-            content = curentUser.getUserName() + "\0" + content + "\0";
+            content = "\0" + curentUser.getUserName() + "\0" + content + "\0";
             Matcher m = Pattern.compile("@(\\w+)").matcher(content);
             Set<User> userFollowers = curentUser.getAllFollowers();
             Set<User> taggedFollowers = new ConcurrentSkipListSet<>();
@@ -144,6 +189,7 @@ public class Manneger {
                     taggedFollowers.add(sendUser);
                 }
             }
+            _allPostMSG.add(content);
             for (User u : userFollowers) {
                 //int uCID = userId.get(u);
                 u.postMsg(content);

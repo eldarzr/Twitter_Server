@@ -45,7 +45,14 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
             message = message.substring(1);
             Post post = new Post();
             post.execute(message, connectionId);
-        } else if (message.charAt(0) == '7') {
+        }
+        else if (message.charAt(0) == '6') {
+            message = message.substring(1);
+            PrivateMessage pm = new PrivateMessage();
+            pm.execute(message, connectionId);
+            //shouldTerminate = true;
+        }
+        else if (message.charAt(0) == '7') {
             //message = "";
             Logstat logstat = new Logstat();
             logstat.execute(message, connectionId);
@@ -55,7 +62,8 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
             Stat stat = new Stat();
             stat.execute(message, connectionId);
             //shouldTerminate = true;
-        } else if (message.charAt(0) == '1' && message.charAt(1) == '2') {
+        }
+        else if (message.charAt(0) == '1' && message.charAt(1) == '2') {
             message = message.substring(2);
             Block block = new Block();
             block.execute(message, connectionId);

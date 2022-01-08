@@ -114,13 +114,21 @@ public class User implements Comparable {
         synchronized (loggedIn) {
             if (loggedIn) {
                 Command command = new Notification();
-                content = "\0" + content;
                 command.execute(content, cID);
             } else {
                 awaitMessage.add(content);
             }
         }
+    }
 
+    public boolean sendPM(User userSender, String content) {
+        synchronized (loggedIn) {
+            if (!followers.contains(userSender) ||!loggedIn)
+                return false;
+                Command command = new Notification();
+                command.execute(content, cID);
+                return true;
+        }
     }
 
     public void login() {
@@ -133,7 +141,6 @@ public class User implements Comparable {
     private void awakeMessage() {
         for (String msg : awaitMessage) {
             Command command = new Notification();
-            msg = "\0" + msg;
             command.execute(msg, cID);
         }
     }
