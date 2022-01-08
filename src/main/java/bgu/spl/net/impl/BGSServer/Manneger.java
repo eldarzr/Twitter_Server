@@ -14,6 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Manneger {
+    private static class mannegerHolder{
+        private static Manneger instance = new Manneger();
+    }
 
     ConcurrentHashMap<String, User> registeredUsers; // <username, user>
     ConcurrentHashMap<User, Boolean> loggedInUsers; // is username loggedIn
@@ -32,9 +35,7 @@ public class Manneger {
     }
 
     public static Manneger getInstance(){
-        if(manneger == null)
-            manneger = new Manneger();
-        return manneger;
+        return mannegerHolder.instance;
     }
 
     public int addConnection(ConnectionHandler connectionHandler){

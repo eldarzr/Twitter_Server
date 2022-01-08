@@ -5,9 +5,11 @@
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/api/bidi/Command.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/newsfeed/NewsFeedServerMain.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/ReactorMain.java
+/home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Logstat.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/rci/Command.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/api/bidi/BidiMessagingProtocol.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Logout.java
+/home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Post.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/rci/ObjectEncoderDecoder.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/BidiMessageEncoderDecoder.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/srv/ConnectionHandler.java
@@ -18,6 +20,7 @@
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/api/MessageEncoderDecoder.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/api/MessagingProtocol.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/api/bidi/ConnectionHandler.java
+/home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Stat.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/echo/LineMessageEncoderDecoder.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Manneger.java
 /home/spl211/SPL_HW3_SERVER/spl-net/src/main/java/bgu/spl/net/impl/BGSServer/Login.java
