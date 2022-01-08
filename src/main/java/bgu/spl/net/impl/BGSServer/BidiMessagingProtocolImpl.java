@@ -58,6 +58,7 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
             //shouldTerminate = true;
         } else if (message.charAt(0) == '8') {
             //message = "";
+            message = message.substring(1);
             Stat stat = new Stat();
             stat.execute(message, connectionId);
             //shouldTerminate = true;

@@ -9,15 +9,16 @@ public class Stat implements Command<String> {
         String s = arg;
         Manneger manneger = Manneger.getInstance();
         Command command;
-        if(manneger.isUserLoggedIn(connectionId))
-            for(String userName : arg.split("|")) {
+        if(manneger.isUserLoggedIn(connectionId)) {
+            for (String userName : arg.split("|")) {
                 User u = manneger.getUser(userName);
-                if(u != null) {
+                if (u != null) {
                     command = new ACK();
                     s = "8" + "\0" + u.getStat();
                     command.execute(s, connectionId);
                 }
             }
+        }
         else {
             command = new Error();
             command.execute(s, connectionId);

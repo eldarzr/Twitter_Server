@@ -189,14 +189,17 @@ public class Manneger {
                 }
             }
             _allPostMSG.add(content);
+            curentUser.addContent(content);
+            userFollowers.addAll(taggedFollowers);
+
             for (User u : userFollowers) {
                 //int uCID = userId.get(u);
                 u.postMsg(content);
             }
-            for (User u : taggedFollowers) {
+          /*  for (User u : taggedFollowers) {
                 //int uCID = userId.get(u);
                 u.postMsg(content);
-            }
+            }*/
 /*        String contentCopy=content;
         while (contentCopy.contains("@")){
              int userPlace = contentCopy.indexOf('@');
