@@ -4,7 +4,6 @@ import bgu.spl.net.api.bidi.BidiMessagingProtocol;
 import bgu.spl.net.api.bidi.Command;
 import bgu.spl.net.api.bidi.ConnectionHandler;
 import bgu.spl.net.api.bidi.Connections;
-import sun.rmi.runtime.Log;
 
 import java.time.LocalDateTime;
 
@@ -34,8 +33,8 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
         } else if (message.charAt(0) == '3') {
             message = message.substring(1);
             Logout logout = new Logout();
-            logout.execute("", connectionId);
-            //shouldTerminate = true;
+            if(logout.execute("", connectionId))
+                shouldTerminate = true;
         } else if (message.charAt(0) == '4') {
             message = message.substring(1);
             Follow follow = new Follow();

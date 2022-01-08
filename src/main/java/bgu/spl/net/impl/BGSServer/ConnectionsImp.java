@@ -41,12 +41,12 @@ public class ConnectionsImp implements Connections<String> {
     @Override
     public void disconnect(int connectionId) {
         if(connectionsMap.containsKey(connectionId)) {
-            ConnectionHandler connectionHandler = connectionsMap.get(connectionId);
+/*            ConnectionHandler connectionHandler = connectionsMap.get(connectionId);
             try {
                 connectionHandler.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
             connectionsMap.remove(connectionId);
         }
     }

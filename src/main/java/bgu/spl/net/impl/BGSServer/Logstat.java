@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Logstat implements Command<String> {
     @Override
-    public void execute(String arg, int connectionId) {
+    public boolean execute(String arg, int connectionId) {
         Manneger manneger = Manneger.getInstance();
         String s = "7";
         User user = manneger.getUser(connectionId);
@@ -23,5 +23,6 @@ public class Logstat implements Command<String> {
             command = new Error();
             command.execute(s, connectionId);
         }
+        return true;
     }
 }

@@ -4,7 +4,7 @@ import bgu.spl.net.api.bidi.Command;
 
 public class Post implements Command<String> {
     @Override
-    public void execute(String args, int connectionId) {
+    public boolean execute(String args, int connectionId) {
         Manneger manneger = Manneger.getInstance();
       String content = args;
       String s = "5";
@@ -14,7 +14,6 @@ public class Post implements Command<String> {
         else
             command = new Error();
         command.execute(s,connectionId);
-
-
+        return true;
     }
 }

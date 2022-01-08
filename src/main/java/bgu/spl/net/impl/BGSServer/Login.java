@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Login implements Command<String> {
     @Override
-    public void execute(String arg, int connectionId) {
+    public boolean execute(String arg, int connectionId) {
         String userName = null, password = null;
         char captcha = '\0';
         for(String s : arg.split("\0")){
@@ -18,7 +18,7 @@ public class Login implements Command<String> {
         }
         if(captcha == '\0') {
             (new Error()).execute("2", connectionId);
-            return;
+            return true;
         }
         User user = new User(userName, password);
         Manneger manneger = Manneger.getInstance();
@@ -29,5 +29,6 @@ public class Login implements Command<String> {
         else
             command = new Error();
         command.execute(s,connectionId);
+        return true;
     }
 }

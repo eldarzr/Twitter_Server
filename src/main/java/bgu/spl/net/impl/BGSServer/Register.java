@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Register implements Command<String> {
     @Override
-    public void execute(String arg, int connectionId) {
+    public boolean execute(String arg, int connectionId) {
         String userName = null, password = null, birthday = null;
         for(String s : arg.split("\0")){
             if(userName == null)
@@ -24,5 +24,6 @@ public class Register implements Command<String> {
         else
             command = new Error();
         command.execute(s,connectionId);
+        return true;
     }
 }

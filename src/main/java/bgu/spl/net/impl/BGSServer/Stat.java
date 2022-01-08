@@ -5,7 +5,7 @@ import bgu.spl.net.api.bidi.Command;
 
 public class Stat implements Command<String> {
     @Override
-    public void execute(String arg, int connectionId) {
+    public boolean execute(String arg, int connectionId) {
         String s = arg;
         Manneger manneger = Manneger.getInstance();
         Command command;
@@ -22,5 +22,6 @@ public class Stat implements Command<String> {
             command = new Error();
             command.execute(s, connectionId);
         }
+        return true;
     }
 }
