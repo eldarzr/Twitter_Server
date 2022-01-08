@@ -9,6 +9,7 @@ import bgu.spl.net.impl.BGSServer.Manneger;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.CancelledKeyException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Queue;
@@ -24,6 +25,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     private final Queue<ByteBuffer> writeQueue = new ConcurrentLinkedQueue<>();
     private final SocketChannel chan;
     private final Reactor reactor;
+    private int connectionId;
     private Manneger manneger;
     private Connections connections;
 
@@ -38,7 +40,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
         this.reactor = reactor;
         manneger = Manneger.getInstance();
         this.connections = connections;
-        int connectionId = manneger.addConnection(this);
+        connectionId = manneger.addConnection(this);
         protocol.start(connectionId,connections);
     }
 
@@ -67,7 +69,9 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
 //                            }
                         }
                     }
-                } finally {
+
+                }
+                finally {
                     releaseBuffer(buf);
                 }
             };
@@ -82,6 +86,8 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     public void close() {
         try {
             chan.close();
+            if(connectionId != -1)
+                connections.disconnect(connectionId);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -92,7 +98,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     }
 
     public void continueWrite() {
-        while (!writeQueue.isEmpty()) {
+        while (!writeQueue.isEmpty() && !isClosed()) {
             try {
                 ByteBuffer top = writeQueue.peek();
                 chan.write(top);

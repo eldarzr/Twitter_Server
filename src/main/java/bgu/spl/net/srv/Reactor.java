@@ -9,11 +9,7 @@ import bgu.spl.net.impl.BGSServer.Manneger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.ClosedSelectorException;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Supplier;
 
@@ -59,14 +55,13 @@ public class Reactor<T> implements Server<T> {
                 runSelectionThreadTasks();
 
                 for (SelectionKey key : selector.selectedKeys()) {
-
-                    if (!key.isValid()) {
-                        continue;
-                    } else if (key.isAcceptable()) {
-                        handleAccept(serverSock, selector);
-                    } else {
-                        handleReadWrite(key);
-                    }
+                        if (!key.isValid()) {
+                            continue;
+                        } else if (key.isAcceptable()) {
+                            handleAccept(serverSock, selector);
+                        } else {
+                            handleReadWrite(key);
+                        }
                 }
 
                 selector.selectedKeys().clear(); //clear the selected keys set so that we can know about new events
@@ -89,10 +84,17 @@ public class Reactor<T> implements Server<T> {
         if (Thread.currentThread() == selectorThread) {
             key.interestOps(ops);
         } else {
-            selectorTasks.add(() -> {
-                key.interestOps(ops);
-            });
-            selector.wakeup();
+            if(key !=  null && key.isValid()) {
+                selectorTasks.add(() -> {
+                    try {
+                        key.interestOps(ops);
+                    }
+                    catch (CancelledKeyException ex) {
+                        //do nothing
+                    }
+                });
+                selector.wakeup();
+            }
         }
     }
 
@@ -115,7 +117,7 @@ public class Reactor<T> implements Server<T> {
         @SuppressWarnings("unchecked")
         NonBlockingConnectionHandler<T> handler = (NonBlockingConnectionHandler<T>) key.attachment();
 
-        if (key.isReadable()) {
+        if (key.isValid() && key.isReadable()) {
             Runnable task = handler.continueRead();
             if (task != null) {
                 pool.submit(handler, task);
