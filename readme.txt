@@ -8,6 +8,8 @@ in order to run the reactor you should run the command $mvn exec:java@reactor -D
 EXAMPLE:
 $mvn exec:java@reactor -Dexec.args="2 7777"
 
+* set of Filtered Words located in Manneger Class in a field named : 'filteredWords'
+
 CLIENT:
 run the command: $make
 in order to run the client you should run the command $bin/BGSClient <ip> <port>

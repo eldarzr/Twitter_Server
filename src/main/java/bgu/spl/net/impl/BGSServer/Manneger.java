@@ -25,7 +25,7 @@ public class Manneger {
     ArrayList<String> _allPrivateMSG;
     Connections connections;
     AtomicInteger counter;
-    final ArrayList<String> filteredWords = new ArrayList<String>(Arrays.asList("Bennet","Loser"));
+    final ArrayList<String> filteredWords = new ArrayList<String>(Arrays.asList("War","Biden"));
 
     private Manneger() {
         this.registeredUsers = new ConcurrentHashMap<>();
@@ -112,7 +112,6 @@ public class Manneger {
     public boolean block(String userName,int cID) {
         if(!isUserLoggedIn(cID))
             return false;
-        User u = registeredUsers.get(userName);
         if (!registeredUsers.containsKey(userName))
             return false;
         User fUser = registeredUsers.get(userName);
@@ -184,30 +183,17 @@ public class Manneger {
             while (m.find()) {
                 String userName = m.group().substring(1);
                 User sendUser = getUser(userName);
-                if (sendUser != null) {
+                if (sendUser != null && !sendUser.isBlocked(curentUser) ) {
                     taggedFollowers.add(sendUser);
                 }
             }
             _allPostMSG.add(content);
             curentUser.addContent(content);
-            userFollowers.addAll(taggedFollowers);
+            taggedFollowers.addAll(userFollowers);
 
-            for (User u : userFollowers) {
-                //int uCID = userId.get(u);
+            for (User u : taggedFollowers) {
                 u.postMsg(content);
             }
-          /*  for (User u : taggedFollowers) {
-                //int uCID = userId.get(u);
-                u.postMsg(content);
-            }*/
-/*        String contentCopy=content;
-        while (contentCopy.contains("@")){
-             int userPlace = contentCopy.indexOf('@');
-             contentCopy = contentCopy.substring(userPlace);
-             int indexOfBlank = contentCopy.indexOf(" ");
-             String userName = contentCopy.substring(1,indexOfBlank);
-        }*/
-
             return true;
         }
 

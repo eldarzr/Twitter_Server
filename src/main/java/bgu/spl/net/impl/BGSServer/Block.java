@@ -6,8 +6,7 @@ public class Block implements Command<String> {
     @Override
     public boolean execute(String args, int connectionId) {
         Manneger manneger = Manneger.getInstance();
-        //int setF=args.charAt(0) - '0';
-        String userName=args;
+        String userName=args.substring(0,args.length()-1);
         String s = "12";
         Command command;
         if(manneger.block(userName,connectionId))

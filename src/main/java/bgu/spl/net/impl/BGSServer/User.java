@@ -86,9 +86,10 @@ public class User implements Comparable {
     public boolean block(User fUser) {
         if (blocked.contains(fUser))
             return false;
-        this.unfollow(fUser);
+        unfollow(fUser);
         fUser.unfollow(this);
         blocked.add(fUser);
+        fUser.blocked.add(this);
         return true;
     }
 
@@ -108,7 +109,7 @@ public class User implements Comparable {
         return u.userName.compareTo(userName);
     }
 
-    private boolean isBlocked(User user) {
+    public boolean isBlocked(User user) {
         return blocked.contains(user);
     }
 
@@ -116,7 +117,7 @@ public class User implements Comparable {
         return followers;
     }
 
-    public void postMsg(String content/*, int cID*/) {
+    public void postMsg(String content) {
         synchronized (loggedIn) {
             if (loggedIn) {
                 Command command = new Notification();
@@ -129,7 +130,7 @@ public class User implements Comparable {
 
     public boolean sendPM(User userSender, String content) {
         synchronized (loggedIn) {
-            if (!followers.contains(userSender))
+            if (!followers.contains(userSender) || isBlocked(userSender))
                 return false;
             if(loggedIn) {
                 Command command = new Notification();

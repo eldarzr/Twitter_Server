@@ -13,7 +13,6 @@ public class Logout implements Command<String> {
         if(manneger.logout(connectionId)) {
             command = new ACK();
             command.execute(s,connectionId);
-            //manneger.getConnections().disconnect(connectionId);
             return true;
         }
         else

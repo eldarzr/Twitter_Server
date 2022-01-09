@@ -13,7 +13,7 @@ public class Logstat implements Command<String> {
         Command command;
         if(manneger.isUserLoggedIn(connectionId))
             for(User u : manneger.getAllUsers()) {
-                if(u != user){
+                if(u != user && !u.isBlocked(user)){
                     command = new ACK();
                     s = "7" + "\0" + u.getStat();
                     command.execute(s,connectionId);

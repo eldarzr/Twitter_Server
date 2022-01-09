@@ -21,21 +21,10 @@ public class Stat implements Command<String> {
         Manneger manneger = Manneger.getInstance();
         Command command;
         if(manneger.isUserLoggedIn(connectionId)) {
-
-
-/*
-            Matcher m = Pattern.compile().matcher(content);
-            Matcher m = Pattern.compile("\\|(\\w+)").matcher(content);
-            Set<User> userFollowers = curentUser.getAllFollowers();
-            Set<User> taggedFollowers = new ConcurrentSkipListSet<>();
-            while (m.find()) {
-                String userName = m.group().substring(1);
-*/
-
-            //String[] a = arg.split("\\|");
+            User currentUser = manneger.getUser(connectionId);
             for (String userName : arg.split("\\|")) {
                 User u = manneger.getUser(userName);
-                if (u != null) {
+                if (u != null && !currentUser.isBlocked(u)) {
                     command = new ACK();
                     s = "8" + "\0" + u.getStat();
                     command.execute(s, connectionId);
