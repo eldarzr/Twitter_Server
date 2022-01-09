@@ -1,7 +1,6 @@
 package bgu.spl.net.srv;
 
-import bgu.spl.net.api.MessageEncoderDecoder;
-import bgu.spl.net.api.MessagingProtocol;
+import bgu.spl.net.api.bidi.MessageEncoderDecoder;
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
 import bgu.spl.net.api.bidi.ConnectionHandler;
 import bgu.spl.net.api.bidi.Connections;
@@ -11,7 +10,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.Connection;
 
 public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler<T> {
 

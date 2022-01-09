@@ -1,7 +1,6 @@
 package bgu.spl.net.srv;
 
-import bgu.spl.net.api.MessageEncoderDecoder;
-import bgu.spl.net.api.MessagingProtocol;
+import bgu.spl.net.api.bidi.MessageEncoderDecoder;
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.ConnectionsImp;
@@ -20,6 +19,7 @@ public class Reactor<T> implements Server<T> {
     private final Supplier<MessageEncoderDecoder<T>> readerFactory;
     private final ActorThreadPool pool;
     private Selector selector;
+    Connections connections;
 
     private Thread selectorThread;
     private final ConcurrentLinkedQueue<Runnable> selectorTasks = new ConcurrentLinkedQueue<>();
@@ -34,6 +34,9 @@ public class Reactor<T> implements Server<T> {
         this.port = port;
         this.protocolFactory = protocolFactory;
         this.readerFactory = readerFactory;
+        Manneger manneger = Manneger.getInstance();
+        this.connections = new ConnectionsImp(/*manneger*/);
+        manneger.setConnections(connections);
     }
 
     @Override
@@ -102,9 +105,9 @@ public class Reactor<T> implements Server<T> {
     private void handleAccept(ServerSocketChannel serverChan, Selector selector) throws IOException {
         SocketChannel clientChan = serverChan.accept();
         clientChan.configureBlocking(false);
-        Manneger manneger = Manneger.getInstance();
-        Connections connections = new ConnectionsImp(/*manneger*/);
-        manneger.setConnections(connections);
+/*        Manneger manneger = Manneger.getInstance();
+        Connections connections = new ConnectionsImp(*//*manneger*//*);
+        manneger.setConnections(connections);*/
         final NonBlockingConnectionHandler<T> handler = new NonBlockingConnectionHandler<>(
                 readerFactory.get(),
                 protocolFactory.get(),

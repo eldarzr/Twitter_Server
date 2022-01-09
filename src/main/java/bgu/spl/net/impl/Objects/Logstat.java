@@ -1,8 +1,7 @@
-package bgu.spl.net.impl.BGSServer;
+package bgu.spl.net.impl.Objects;
 
 import bgu.spl.net.api.bidi.Command;
-
-import java.io.Serializable;
+import bgu.spl.net.impl.BGSServer.Manneger;
 
 public class Logstat implements Command<String> {
     @Override

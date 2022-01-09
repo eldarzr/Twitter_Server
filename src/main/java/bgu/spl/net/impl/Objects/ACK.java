@@ -1,6 +1,7 @@
-package bgu.spl.net.impl.BGSServer;
+package bgu.spl.net.impl.Objects;
 
 import bgu.spl.net.api.bidi.Command;
+import bgu.spl.net.impl.BGSServer.Manneger;
 
 import java.io.Serializable;
 

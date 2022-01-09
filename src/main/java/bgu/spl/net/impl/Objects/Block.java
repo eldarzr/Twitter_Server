@@ -1,16 +1,16 @@
-package bgu.spl.net.impl.BGSServer;
+package bgu.spl.net.impl.Objects;
 
 import bgu.spl.net.api.bidi.Command;
+import bgu.spl.net.impl.BGSServer.Manneger;
 
-public class Follow implements Command<String> {
+public class Block implements Command<String> {
     @Override
     public boolean execute(String args, int connectionId) {
         Manneger manneger = Manneger.getInstance();
-        int setF=args.charAt(0) - '0';
-        String userName=args.substring(1);
-        String s = "4";
+        String userName=args.substring(0,args.length()-1);
+        String s = "12";
         Command command;
-        if(manneger.follow(userName,setF,connectionId))
+        if(manneger.block(userName,connectionId))
             command = new ACK();
         else
             command = new Error();

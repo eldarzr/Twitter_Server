@@ -1,4 +1,4 @@
-package bgu.spl.net.impl.BGSServer;
+package bgu.spl.net.impl.Objects;
 
 import bgu.spl.net.api.bidi.Command;
 
@@ -155,6 +155,7 @@ public class User implements Comparable {
             Command command = new Notification();
             command.execute(msg, cID);
         }
+        awaitMessage.clear();
     }
         public void logout () {
             synchronized (loggedIn) {
